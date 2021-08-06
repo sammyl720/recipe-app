@@ -35,8 +35,7 @@ const RecipeSchema = new mongoose.Schema({
   },
   category: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Category'
+      type: String
     }
   ],
   prepTime: {
@@ -49,6 +48,6 @@ const RecipeSchema = new mongoose.Schema({
   }
 });
 
-const Recipe = mongoose.model('Recipe', RecipeSchema);
+const Recipe = mongoose.models.Recipe || mongoose.model('Recipe', RecipeSchema);
 
 export default Recipe;
