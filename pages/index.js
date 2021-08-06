@@ -15,13 +15,13 @@ export default function Home() {
         Signed in as {session.user.email}
         {Object.entries(session.user).map(([key, value]) => {
           if (key !== 'image') {
-            return <div>{key}: {value}</div>
+            return <div className='text-blue-800'>{key}: {value}</div>
           }
           return <img src={value} width='60' height='60' />
         }
         )}
 
-        <button onClick={() => signOut()}>Sign out</button>
+        <button className='border rounded p-2' onClick={() => signOut()}>Sign out</button>
         </ div>
       }
     </div>
