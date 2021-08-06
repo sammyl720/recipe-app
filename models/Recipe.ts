@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import slugify from '../utils/slugify';
 
 const RecipeSchema = new mongoose.Schema({
   title: {
@@ -33,6 +34,14 @@ const RecipeSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  image: {
+    type: String,
+    required: true
+  },
+  slug: {
+    type: String,
+    unique: true
+  },
   category: [
     {
       type: String
@@ -47,7 +56,6 @@ const RecipeSchema = new mongoose.Schema({
     default: 0
   }
 });
-
 const Recipe = mongoose.models.Recipe || mongoose.model('Recipe', RecipeSchema);
 
 export default Recipe;

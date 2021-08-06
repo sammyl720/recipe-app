@@ -1,10 +1,14 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useQuery } from '@apollo/client'
+import { getPopularRecipes } from '../gql/index'
 import Image from 'next/image'
 import axios from 'axios'
+import Loader from '../components/Loader'
 import { useSession, signIn, signOut } from 'next-auth/client'
 export default function Home() {
-  const [session, loading] = useSession()
+  const [session] = useSession()
+
+  const { loading, error, data } = useQuery(getPopularRecipes)
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     let file =  e.currentTarget.querySelector<HTMLInputElement>('#file').files[0]
@@ -28,6 +32,14 @@ export default function Home() {
       console.log(error)
     }
   }
+
+  if (loading) {
+    return <Loader />
+  }
+  if (error) {
+    console.log(error)
+    return <h1>Error!</h1>
+  }
   return (
     <div>
       <h3>Welcome to recipe app</h3>
@@ -49,11 +61,13 @@ export default function Home() {
         <button className='border rounded p-2' onClick={() => signOut()}>Sign out</button>
         </ div>
       }
-
-      <form onSubmit={handleSubmit} >
-        <input type="file" name="file" id="file" accept='image/*' />
-        <button className='btn btn-primary' type='submit'>Upload</button>
-      </form>
+      { data && data.getPopularRecipes && data.getPopularRecipes.map(recipe => ( 
+        <div key={recipe.id}>
+          <h4>{recipe.title}</h4>
+          <p>{recipe.description}</p>
+          <Image src={recipe.image} width='60' height='60' />
+        </div>
+      ))}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import Profile from '../models/Profile';
 import User from '../models/User'
 import Recipe from '../models/Recipe';
 import Category from '../models/Category';
+import slugify from '../utils/slugify';
 
 const resolvers = {
   Query: {
@@ -38,17 +39,45 @@ const resolvers = {
         console.log(error)
         return null
       }
+    },
+    async getPopularRecipes(parent, args, context) {
+      try {
+        const recipes = await Recipe.find({}).populate('author').sort({ likeCount: -1 }).limit(10);
+        return recipes || null;
+      } catch (error) {
+        console.log(error)
+        return null
+      }
+    },
+    async getRecipeBySlug(parent, {slug}, context) {
+      try {
+        const recipe = await Recipe.findOne({ slug });
+        return recipe || null;
+      } catch (error) {
+        console.log(error)
+        return null
+      }
     }
     
   },
   Mutation: {
     async createRecipe(parent, args, context) {
       try {
+        console.log(args.recipe, 'recipe input')
         const { session, profile } = context;
+
         if(session.user && profile) {
+          let slug = slugify(args.recipe.title);
+
+          // check if slug already exists
+          let rcp = await Recipe.findOne({ slug });
+          if(rcp) {
+            slug += '-' + Math.floor(Math.random() * 100000);
+          }
           const recipe = new Recipe({
             ...args.recipe,
-            author: profile._id
+            author: profile._id,
+            slug
           });
           await recipe.save();
           profile.recipes.push(recipe._id);

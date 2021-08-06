@@ -21,8 +21,7 @@ const apolloServer = new ApolloServer({
     if (count === null) {
       count = await User.count()
     }
-    if(session.user) {
-      console.log(count)
+    if(session?.user) {
       //@ts-ignore
        profile = await Profile.findOne({ user: session.user.id }).populate('user');
         if (!profile) {

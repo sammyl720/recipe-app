@@ -3,6 +3,8 @@ import '../styles/globals.css'
 import Head from 'next/head'
 import Layout from '../components/Layout'
 import { Provider } from 'next-auth/client'
+import { ApolloProvider } from '@apollo/client'
+import client from '../apollo'
 function MyApp({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
@@ -16,9 +18,11 @@ function MyApp({ Component, pageProps }) {
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;0,800;1,200;1,400&family=Sintony:wght@400;700&display=swap" rel="stylesheet" />
         <title>Recipe App</title>
       </Head>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ApolloProvider client={client}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ApolloProvider>
     </Provider>
   )
 }

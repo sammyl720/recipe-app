@@ -5,6 +5,8 @@ const typeDefs = gql`
     me: Profile
     getRecipe(id: ID!): Recipe
     findRecipes(query: String!): [Recipe]
+    getPopularRecipes: [Recipe]
+    getRecipeBySlug(slug: String!): Recipe
   }
 
   type Mutation {
@@ -49,6 +51,8 @@ const typeDefs = gql`
     updatedAt: String!
     likeCount: Int!
     prepTime: Int!
+    image: String!
+    slug: String
     servingCount: Int!
     author: Profile
   }
@@ -59,6 +63,7 @@ const typeDefs = gql`
     ingredients: [String]!
     instructions: [String]!
     category: [String]!
+    image: String!
     prepTime: Int!
     servingCount: Int!
   }
