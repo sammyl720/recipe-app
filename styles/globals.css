@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn {
+  @apply border p-2 rounded shadow hover:shadow-sm;
+}
+
+.btn-primary {
+  @apply bg-primary p-2 rounded shadow hover:shadow-sm text-light;
+}
+
+.btn-danger {
+  @apply bg-danger p-2 rounded shadow hover:shadow-sm text-light;
+}
+
+.btn-dark {
+  @apply bg-dark p-2 rounded shadow hover:shadow-sm text-light;
+}
+
+.btn-secondary {
+  @apply bg-secondary p-2 rounded shadow hover:shadow-sm text-light;
+}
+
+.btn-warning {
+  @apply bg-warning p-2 rounded shadow hover:shadow-sm text-light;
+}
+
+.btn-success {
+  @apply bg-success p-2 rounded shadow hover:shadow-sm text-light;
+}
+
+.loader {
+  @apply absolute flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
