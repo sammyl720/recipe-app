@@ -68,6 +68,31 @@ export const getRecipeByID = gql`
   ${imageFragment}
   ${userFragment}
 `;
+export const saveRecipe = gql`
+  mutation($id: ID!) {
+    saveRecipe(id: $id) {
+      id
+      title
+      image {
+        ...imageFragment
+      }
+      description
+      ingredients
+      instructions
+      prepTime
+      servingCount
+      category
+      author {
+        id
+        user {
+        ...userFragment
+        }
+      }
+    }
+  }
+  ${imageFragment}
+  ${userFragment}
+`;
 
 export const getRecipeBySlug = gql`
   query($slug: String!) {
@@ -86,6 +111,41 @@ export const getRecipeBySlug = gql`
       slug
       author {
         id
+        savedRecipes {
+          id
+          slug
+        }
+        user {
+          ...userFragment
+        }
+      }
+    }
+  }
+  ${imageFragment}
+  ${userFragment}
+`;
+
+export const findRecipes = gql`
+  query($query: String!) {
+    findRecipes(query: $query) {
+      id
+      title
+      image {
+        ...imageFragment
+      }
+      description
+      ingredients
+      instructions
+      prepTime
+      servingCount
+      category
+      slug
+      author {
+        id
+        savedRecipes {
+          id
+          slug
+        }
         user {
           ...userFragment
         }
@@ -110,6 +170,7 @@ export const createRecipe = gql`
       prepTime
       servingCount
       category
+      slug
       author {
         id
         user {
@@ -118,6 +179,47 @@ export const createRecipe = gql`
       }
     }
   }
+  ${imageFragment}
+  ${userFragment}
+`;
+
+export const me = gql`
+  {
+  me {
+    user {
+      name
+      email
+      image
+    }
+    recipes {
+      id
+      title
+      slug
+      description
+      image {
+        ...imageFragment
+      }
+    }
+    savedRecipes {
+      id
+      title
+      slug
+      description
+      image {
+        ...imageFragment
+      }
+      author {
+        id
+        user {
+          ...userFragment
+        }
+      }
+    }
+  }
+
+
+}
+
   ${imageFragment}
   ${userFragment}
 `;

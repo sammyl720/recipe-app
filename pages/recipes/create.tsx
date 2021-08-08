@@ -7,6 +7,7 @@ import Head from 'next/head';
 import InputArray from '../../components/InputArray';
 import axios from 'axios';
 import { useSession, signIn } from 'next-auth/client';
+import { useEffect } from 'react';
 
 
 const CreateRecipe = () => {
@@ -15,18 +16,34 @@ const CreateRecipe = () => {
   const [load, setLoad] = useState(false);
   const [createRecipeMutation] = useMutation(createRecipe);
   const [img, setImg] = useState(null);
+  const [response, setResponse] = useState<any>(null);
   const [fields, setFields] = useState({
     title: '',
     description: '',
     ingredients: [''],
     instructions: [''],
     category: [''],
-    prepTime: 0,
-    servingCount: 0
+    prepTime: 5,
+    servingCount: 2
   });
 
   const router = useRouter();
 
+  useEffect(() => {
+    if(response?.createRecipe) {
+      setFields({
+        title: '',
+        description: '',
+        ingredients: [''],
+        instructions: [''],
+        category: [''],
+        prepTime: 5,
+        servingCount: 2
+      });
+      console.log(response);
+      router.push('/recipes/' + response.createRecipe.slug);
+    }
+  }, [response]);
   const handleImageChange = (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -65,10 +82,9 @@ const CreateRecipe = () => {
         }
       })
 
-      console.log(res)
       const { image: { _id: image } } = res.data
 
-      await createRecipeMutation({
+      const { data: d } = await createRecipeMutation({
         variables: {
           recipe: {
             ...fields,
@@ -84,10 +100,12 @@ const CreateRecipe = () => {
           setLoad(false);
         },
         onCompleted: (data) => {
-          console.log(data);
+          // console.log(data);
+          setLoad(false);
           router.push('/recipes/' + data.createRecipe.recipe.slug);
         }
       })
+      setResponse(d);
     } catch (error) {
       console.log(error)
     } finally {
@@ -96,6 +114,9 @@ const CreateRecipe = () => {
   }
   return (
     <div className='flex flex-col w-full p-4 justify-center items-center'>
+      <Head>
+        <title>Create Recipe</title>
+      </Head>
       <h1 className='leading-8 font-extrabold text-2xl'>Create a recipe</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 my-2 p-2 w-full mx-auto bg-opacity-10 bg-success rounded shadow'>
         <div className='form-group'>
@@ -129,6 +150,8 @@ const CreateRecipe = () => {
             type='number'
             id='prepTime'
             name='prepTime'
+            min='5'
+            max='720'
             value={fields.prepTime}
             onChange={handleChange}
             required

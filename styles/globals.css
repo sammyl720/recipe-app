@@ -52,6 +52,7 @@ body {
   left: 1rem;
   font-size: 1rem;
   top:1rem;
+  transform: translateY(-125%);
 }
 
 .form-group > .form-control{
@@ -80,11 +81,6 @@ button:disabled {
   @apply border-success;
 }
 
-.form-group > .form-control:focus-within + label {
-  animation: slideUp 0.5s ease-in-out;
-  animation-fill-mode: forwards;
-}
-
 
 textarea.form-control {
   resize: none ;
@@ -96,15 +92,4 @@ textarea.form-control {
   @apply border-danger;
   border-width: 1px;
   border-style: solid;
-}
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-120%);
-    opacity: 0.8;
-  }
 }

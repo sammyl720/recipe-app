@@ -1,9 +1,34 @@
 import React from 'react'
 import Image from 'next/image'
+import {  useSession } from 'next-auth/client'
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router'
+
 import Head from 'next/head'
 import client from '../../apollo/index'
-import { getRecipeBySlug } from '../../gql'
+import { getRecipeBySlug, saveRecipe } from '../../gql'
+
+
 const Recipe = ({ recipe }) => {
+  const router = useRouter()
+  const [session] = useSession()
+  const [saveRecipeMutation] = useMutation(saveRecipe)
+
+  const save = async (id) => {
+    if(!session){
+      return
+    }
+    try {
+      await saveRecipeMutation({
+        variables: {
+          id
+        }
+      })
+      router.push(`/dashboard`)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <>
       <Head>
@@ -11,9 +36,24 @@ const Recipe = ({ recipe }) => {
         <meta name="description" content={recipe.description} />
         <meta name="og:title" content={recipe.title} />
         <meta name="og:description" content={recipe.description} />
-        <meta name="og:image" content={recipe.image.url} />
+        <meta name="og:image" content={recipe.image.secure_url} />
         <meta name="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
         <meta name="og:type" content="recipe" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "Recipe",
+            name: recipe.title,
+            description: recipe.description,
+            image: {
+              "@type": "ImageObject",
+              url: recipe.image.secure_url,
+              height: recipe.image.height,
+              width: recipe.image.width
+            },
+            url: process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug
+          })}
+        </script>
       </Head>
       <article className='flex flex-col w-full p-2 mx-auto mt-2  max-w-4xl'>
         <Image className='object-cover w-full h-auto rounded shadow' src={recipe.image.secure_url} layout='intrinsic' alt={recipe.title} width={recipe.image.width} height={recipe.image.height} objectFit='cover' />
@@ -52,9 +92,22 @@ const Recipe = ({ recipe }) => {
             </div>
           ))}
         </aside>
-        {/* share recipe */}
+        
         
       </article>
+      { session?.user &&
+        // @ts-ignore
+        session.user.id == recipe.author.user.id ? (
+          <section className='flex flex-wrap justify-end gap-2 my-2 p-2'>
+            <button className="btn-secondary">Update Recipe</button>
+            <button className="btn-danger">Delete Recipe</button>
+          </section>
+        ) : (
+          <section className='flex flex-wrap justify-end gap-2 my-2 p-2'>
+            <button className="btn-secondary" onClick={() => save(recipe.id)} >Save Recipes</button>
+          </section>
+        )
+      }
     </>
   )
 }
@@ -82,16 +135,18 @@ export async function getStaticProps(ctx) {
     return {
       props: {
         recipe: data.getRecipeBySlug
-      }
+      },
+      revalidate: 5
     }
 
     
   } catch (error) {
     console.log(error)
     return {
-      props: {
-        recipe: null
-      }
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
     }
   }
 }

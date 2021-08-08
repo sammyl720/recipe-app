@@ -33,7 +33,9 @@ export default function Home() {
           <a>
           <div className='p-4 rounded shadow max-w-sm flex flex-col gap-2 hover:shadow-lg bordered bg-opacity-30 bg-pink-100 w-100 h-full' >
             <h4 className='my-2 text-lg text-dark font-semibold'>{recipe.title}</h4>
-            <p>{recipe.description}</p>
+            <p>{recipe.description.length > 40 ? 
+              recipe.description.substring(0, 40) + '...' : recipe.description
+            }</p>
             <Image className='object-cover w-full h-auto' src={recipe.image.secure_url} width={recipe.image.width} height={recipe.image.height} objectFit='cover' />
           </div>
           </a>
