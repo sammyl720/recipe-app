@@ -39,6 +39,23 @@ const Recipe = ({ recipe }) => {
         <meta name="og:image" content={recipe.image.secure_url} />
         <meta name="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
         <meta name="og:type" content="recipe" />
+        <meta property="og:site_name" content="Recipes" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:locale:alternate" content="en_US" />
+        <meta property="og:image:width" content={recipe.image.width} />
+        <meta property="og:image:height" content={recipe.image.height} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@EatableRecipes" />
+        <meta name="twitter:title" content={recipe.title} />
+        <meta name="twitter:description" content={recipe.description} />
+        <meta name="twitter:image" content={recipe.image.secure_url} />
+        <meta name="twitter:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
+        <meta name="twitter:creator" content="@eatablerecipes" />
+        <meta name="twitter:image:width" content={recipe.image.width} />
+        <meta name="twitter:image:height" content={recipe.image.height} />
+
+
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "http://schema.org",
