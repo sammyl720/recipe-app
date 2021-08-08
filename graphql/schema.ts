@@ -51,10 +51,19 @@ const typeDefs = gql`
     updatedAt: String!
     likeCount: Int!
     prepTime: Int!
-    image: String!
+    image: Image!
     slug: String
     servingCount: Int!
     author: Profile
+  }
+
+  type Image {
+    id: ID!
+    public_id: String!
+    url: String!
+    secure_url: String!
+    width: Int!
+    height: Int!
   }
 
   input RecipeInput {
@@ -63,7 +72,7 @@ const typeDefs = gql`
     ingredients: [String]!
     instructions: [String]!
     category: [String]!
-    image: String!
+    image: ID!
     prepTime: Int!
     servingCount: Int!
   }

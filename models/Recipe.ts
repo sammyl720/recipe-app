@@ -35,8 +35,8 @@ const RecipeSchema = new mongoose.Schema({
     default: 0
   },
   image: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Image'
   },
   slug: {
     type: String,

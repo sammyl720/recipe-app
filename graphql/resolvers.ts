@@ -2,6 +2,7 @@ import Profile from '../models/Profile';
 import User from '../models/User'
 import Recipe from '../models/Recipe';
 import Category from '../models/Category';
+import Image from '../models/Image';
 import slugify from '../utils/slugify';
 
 const resolvers = {
@@ -211,6 +212,15 @@ const resolvers = {
         return null
       }
     },
+    async image(parent, args, context) {
+      try {
+        const image = await Image.findOne({ _id: parent.image });
+        return image || null;
+      } catch (error) {
+        console.log(error)
+        return null
+      }
+    }
   }
 }
 

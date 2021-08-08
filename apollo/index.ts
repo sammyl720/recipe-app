@@ -4,7 +4,7 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: process.env.NEXTAUTH_URL + '/api/graphql',
+  uri: process.env.NEXT_PUBLIC_URL + '/api/graphql',
   
   cache: new InMemoryCache()
 });

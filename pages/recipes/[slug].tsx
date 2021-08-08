@@ -15,7 +15,7 @@ const Recipe = ({ recipe }) => {
         <meta name="og:type" content="recipe" />
       </Head>
       <div className='flex flex-col border rounded p-2 mx-auto mt-2  max-w-3xl w-100'>
-        <Image className='object-cover w-100 h-auto' src={recipe.image} layout='intrinsic' alt={recipe.title} width='100%' height='320' objectFit='fill' />
+        <Image className='object-cover w-100 h-auto' src={recipe.image.secure_url} layout='intrinsic' alt={recipe.title} width={recipe.image.width} height={recipe.image.height} objectFit='cover' />
         <div className='flex flex-col p-2'>
           <h1 className='text-2xl font-bold mb-2'>{recipe.title}</h1>
           <p className='text-sm text-gray-700'>{recipe.description}</p>
@@ -58,7 +58,7 @@ export async function getStaticProps(ctx) {
     const { data } = await client.query({
         query: getRecipeBySlug,
         variables: {
-          slug
+          slug: slug.toLowerCase()
         }
     })
 

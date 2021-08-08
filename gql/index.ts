@@ -1,22 +1,46 @@
 import { gql } from '@apollo/client';
 
+const userFragment = gql`
+  fragment userFragment on User {
+    id
+    name
+    image
+  }
+`;
+
+const imageFragment = gql`
+  fragment imageFragment on Image {
+    id
+    url
+    secure_url
+    width
+    height
+    public_id
+  }
+`;
+
+
 export const getPopularRecipes = gql`
   query {
     getPopularRecipes {
       id
       title
-      image
+      slug
+      image {
+        ...imageFragment
+      }
       description
       category
       author {
         id
         user {
-          name
-          image
+          ...userFragment
         }
       }
     }
   }
+  ${imageFragment}
+  ${userFragment}
 `;
 
 export const getRecipeByID = gql`
@@ -24,7 +48,9 @@ export const getRecipeByID = gql`
     getRecipe(id: $id) {
       id
       title
-      image
+      image {
+        ...imageFragment
+      }
       description
       ingredients
       instructions
@@ -34,12 +60,13 @@ export const getRecipeByID = gql`
       author {
         id
         user {
-          name
-          image
+        ...userFragment
         }
       }
     }
   }
+  ${imageFragment}
+  ${userFragment}
 `;
 
 export const getRecipeBySlug = gql`
@@ -47,7 +74,9 @@ export const getRecipeBySlug = gql`
     getRecipeBySlug(slug: $slug) {
       id
       title
-      image
+      image {
+        ...imageFragment
+      }
       description
       ingredients
       instructions
@@ -57,10 +86,37 @@ export const getRecipeBySlug = gql`
       author {
         id
         user {
-          name
-          image
+          ...userFragment
         }
       }
     }
   }
+  ${imageFragment}
+  ${userFragment}
+`;
+
+export const createRecipe = gql`
+  mutation createRecipe($recipe: RecipeInput!) {
+    createRecipe(recipe: $recipe) {
+      id
+      title
+      image {
+        ...imageFragment
+      }
+      description
+      ingredients
+      instructions
+      prepTime
+      servingCount
+      category
+      author {
+        id
+        user {
+          ...userFragment
+        }
+      }
+    }
+  }
+  ${imageFragment}
+  ${userFragment}
 `;

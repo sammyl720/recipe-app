@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client'
 import uploader from '../../utils/uploader'
 import slugify from '../../utils/slugify'
+import Image from '../../models/Image';
 export const config = {
   api: {
     bodyParser: false
@@ -37,9 +38,18 @@ export default async (req: NextApiRequest, res:NextApiResponse) => {
       const upload = await uploader(files.file.path, {
         public_id: slugify(session.user?.name || 'no user') + '/' + slugify(fields.title || files.file.name.split('.')[0] || 'no title'),
       })
-      return res.json({
+      console.log(upload)
+      const image = new Image({
         url: upload.url,
-        secure_url: upload.secure_url
+        secure_url: upload.secure_url,
+        public_id: upload.public_id,
+        width: upload.width,
+        height: upload.height
+      })
+
+      await image.save()
+      return res.json({
+        image
       })
     } catch (error) {
       console.log(error)
