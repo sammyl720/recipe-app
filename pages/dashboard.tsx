@@ -36,17 +36,18 @@ const dashboard = () => {
 
       <h1 className='mt-4 font-bold text-2xl'>My Recipes</h1>
       <div className='flex w-full gap-4 overflow-x-scroll bordered bg-scroll py-2'>
-
         {data.me.recipes.map(recipe => (
+          <div className='min-w-max max-w-md'>
           <Link href={`/recipes/${recipe.slug}`}>
-            <a>
-            <div className='flex flex-col rounded shadow bg-red-100 bg-opacity-20 p-2 max-w-xs h-full' key={recipe.id}>
+            <a className='w-full'>
+            <div className='flex flex-col rounded shadow bg-red-100 bg-opacity-20 w-full p-2 h-full' key={recipe.id}>
               <Image className='object-cover w-full h-auto rounded' src={recipe.image.secure_url} width={recipe.image.width} height={recipe.image.height} alt={recipe.title} objectFit='cover' />
               <h3 className='font-semibold my-2 text-2xl leading-10'>{recipe.title}</h3>
               <p>{recipe.description.length > 40 ? recipe.description.substr(0,40) + '...' : recipe.description}</p>
               </div>
             </a>
           </Link>
+          </div>
         ))}
       </div>
       <div className='my-2 p-2'>
@@ -58,18 +59,19 @@ const dashboard = () => {
         </ div>
       <hr className='my-4' />
       <h1 className='mt-4 font-bold text-2xl'>My Saved Recipes</h1>
-      <div className='flex w-full gap-4 overflow-x-scroll bordered bg-scroll py-2 '>
-
+      <div className='flex w-full gap-4 overflow-x-scroll bordered bg-scroll py-2'>
         {data.me.savedRecipes.map(recipe => (
+          <div className='min-w-max max-w-md'>
           <Link href={`/recipes/${recipe.slug}`}>
-            <a>
-            <div className='flex flex-col rounded shadow bg-red-100 bg-opacity-20 p-2 max-w-xs h-full' key={recipe.id}>
+            <a className='w-full'>
+            <div className='flex flex-col rounded shadow bg-red-100 bg-opacity-20 w-full p-2 h-full' key={recipe.id}>
               <Image className='object-cover w-full h-auto rounded' src={recipe.image.secure_url} width={recipe.image.width} height={recipe.image.height} alt={recipe.title} objectFit='cover' />
               <h3 className='font-semibold my-2 text-2xl leading-10'>{recipe.title}</h3>
               <p>{recipe.description.length > 40 ? recipe.description.substr(0,40) + '...' : recipe.description}</p>
               </div>
             </a>
           </Link>
+          </div>
         ))}
       </div>
       <hr className='my-4' />

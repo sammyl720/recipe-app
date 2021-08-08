@@ -9,7 +9,7 @@ import client from '../../apollo/index'
 import { getRecipeBySlug, saveRecipe } from '../../gql'
 
 
-const Recipe = ({ recipe }) => {
+const Recipe = ({ recipe, meta }) => {
   const router = useRouter()
   const [session] = useSession()
   const [saveRecipeMutation] = useMutation(saveRecipe)
@@ -35,21 +35,7 @@ const Recipe = ({ recipe }) => {
         title={recipe.title}
         description={recipe.description}
         canonical={`${process.env.NEXT_PUBLIC_URL + '/recipes/' + recipe.slug}`}
-        openGraph={{
-          url: process.env.NEXT_PUBLIC_URL + '/recipes/' + recipe.slug,
-          title: recipe.title,
-          description: recipe.description,
-          images: [
-            {
-              url: recipe.image.secure_url,
-              width: recipe.image.width,
-              height: recipe.image.height,
-              alt: recipe.title
-            }
-          ],
-          type: 'article',
-          site_name: 'eatable recipes'
-        }}
+        openGraph={meta}
         twitter={{
           cardType: 'summary_large_image',
           site: '@eatablerecipes',
@@ -113,7 +99,7 @@ const Recipe = ({ recipe }) => {
   )
 }
 
-export async function getServerSideProps(ctx) {
+export async function getStaticProps(ctx) {
 
   try {
     const { slug } = ctx.params
@@ -130,15 +116,31 @@ export async function getServerSideProps(ctx) {
           destination: '/',
           permanent: false,
         },
-        notFound: true
       }
     }
     
+    const { recipe } = data.getRecipeBySlug
+    const meta = {
+      url: process.env.NEXT_PUBLIC_URL + '/recipes/' + recipe.slug,
+      title: recipe.title,
+      description: recipe.description,
+      images: [
+        {
+          url: recipe.image.secure_url,
+          width: recipe.image.width,
+          height: recipe.image.height,
+          alt: recipe.title
+        }
+      ],
+      type: 'article',
+      site_name: 'eatable recipes'
+    }
     return {
       props: {
-        recipe: data.getRecipeBySlug
+        recipe,
+        meta
       },
-      // revalidate: 5
+      revalidate: 5
     }
 
     
@@ -151,6 +153,17 @@ export async function getServerSideProps(ctx) {
       },
     }
   }
+}
+
+export async function getStaticPaths() {
+  const paths = [
+    {
+      params: {
+        slug: 'spagheti'
+      }
+    }
+  ]
+  return { paths, fallback: 'blocking' }
 }
 
 export default Recipe

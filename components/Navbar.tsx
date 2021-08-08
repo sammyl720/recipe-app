@@ -1,11 +1,18 @@
 import React from 'react'
 import { useSession, signIn } from 'next-auth/client'
 import Image from 'next/image';
+import Head from 'next/head'
 import Link from 'next/link'
 export default function Navbar() {
   const [ session ] = useSession()
   return (
     <div className='w-100 bg-secondary text-white xs:px-2 xl:px-0'>
+      <Head>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet="utf-8" />
+        <meta name="theme-color" content="#ffffff" />
+        <title>Recipe App</title>
+      </Head>
       <nav className='mx-auto w-100 container max-w-4xl flex justify-between items-center py-2 '>
         <Link href='/'>
           <a className='flex items-center justify-center'>
