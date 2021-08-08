@@ -34,17 +34,14 @@ const Recipe = ({ recipe }) => {
       <Head>
         <title>{recipe.title}</title>
         <meta name="description" content={recipe.description} />
-        <meta name="og:title" content={recipe.title} />
-        <meta name="og:description" content={recipe.description} />
-        <meta name="og:image" content={recipe.image.secure_url} />
-        <meta name="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
-        <meta name="og:type" content="recipe" />
-        <meta property="og:site_name" content="Recipes" />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={recipe.title} />
+        <meta property="og:description" content={recipe.description} />
+        <meta property="og:image" content={recipe.image.secure_url} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
         <meta property="og:locale" content="en_US" />
-        <meta property="og:locale:alternate" content="en_US" />
-        <meta property="og:image:width" content={recipe.image.width} />
-        <meta property="og:image:height" content={recipe.image.height} />
-
+        <meta property="og:locale:alternate" content="en_US" />     
+        <meta property="article:author" content={recipe.author.user.name} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@EatableRecipes" />
         <meta name="twitter:title" content={recipe.title} />
