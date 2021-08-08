@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
     <>
       <Navbar />
       {loading ? <Loader /> : (
-      <div className="container mx-auto max-w-2xl">
+      <div className="container mx-auto max-w-4xl">
         { children }
       </div>
       )}

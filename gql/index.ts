@@ -83,6 +83,7 @@ export const getRecipeBySlug = gql`
       prepTime
       servingCount
       category
+      slug
       author {
         id
         user {

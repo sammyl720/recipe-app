@@ -20,14 +20,28 @@ export default function Home() {
     return <h1>Error!</h1>
   }
   return (
-    <div className='bg-gray-100 w-full mt-4 flex flex-col'>
-      <h1 className='leading-8 font-extrabold text-2xl'>Welcome to recipe app</h1>
+    <div className=' w-full mt-4 flex flex-col p-2'>
+      <h1 className='leading-8 font-extrabold text-2xl ml-2 my-4'>Welcome to recipe app</h1>
       {!session &&
         <button className='btn-primary' onClick={() => signIn()}>Sign in</button>
       }
 
+      <h3 className='ml-2 text-2xl leading-8 font-bold'>Popular recipes</h3>
+      <div className='flex flex-wrap gap-2 p-2 w-full'>
+      { data && data.getPopularRecipes && data.getPopularRecipes.map(recipe => ( 
+        <Link href={`/recipes/${recipe.slug}`} key={recipe.id} >
+          <a>
+          <div className='p-4 rounded shadow max-w-sm flex flex-col gap-2 hover:shadow-lg bordered bg-opacity-30 bg-pink-100 w-100 h-full' >
+            <h4 className='my-2 text-lg text-dark font-semibold'>{recipe.title}</h4>
+            <p>{recipe.description}</p>
+            <Image className='object-cover w-full h-auto' src={recipe.image.secure_url} width={recipe.image.width} height={recipe.image.height} objectFit='cover' />
+          </div>
+          </a>
+        </Link>
+      ))}
+      </div>
       {session &&
-        <div className='my-4'>
+        <div className='my-4 p-2'>
           <Link href='/recipes/create'>
             <a>
             <button className='btn-primary'>Create recipe</button>
@@ -35,17 +49,6 @@ export default function Home() {
           </Link>
         </ div>
       }
-      { data && data.getPopularRecipes && data.getPopularRecipes.map(recipe => ( 
-        <Link href={`/recipes/${recipe.slug}`}>
-          <a>
-          <div key={recipe.id}>
-            <h4>{recipe.title}</h4>
-            <p>{recipe.description}</p>
-            <Image src={recipe.image} width='60' height='60' />
-          </div>
-          </a>
-        </Link>
-      ))}
     </div>
   )
 }
