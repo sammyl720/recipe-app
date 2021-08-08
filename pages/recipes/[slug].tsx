@@ -34,11 +34,11 @@ const Recipe = ({ recipe }) => {
       <Head>
         <title>{recipe.title}</title>
         <meta name="description" content={recipe.description} />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={recipe.title} />
-        <meta property="og:description" content={recipe.description} />
-        <meta property="og:image" content={recipe.image.secure_url} />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
+        <meta property="og:type" name='og:type' content="article" />
+        <meta property="og:title" name='og:title' content={recipe.title} />
+        <meta property="og:description" name='og:description' content={recipe.description} />
+        <meta property="og:image" name='og:image' content={recipe.image.secure_url} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug +'/'}  />
         <meta property="og:locale" content="en_US" />
         <meta property="og:locale:alternate" content="en_US" />     
         <meta property="article:author" content={recipe.author.user.name} />
