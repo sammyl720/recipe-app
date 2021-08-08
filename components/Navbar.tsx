@@ -26,7 +26,7 @@ export default function Navbar() {
           ) : (
             <>
               <li className='flex items-center justify-center'>
-                <button className='btn-secondary' onClick={() => signIn()}>
+                <button className='btn-primary' onClick={() => signIn()}>
                   Login
                 </button>
               </li>

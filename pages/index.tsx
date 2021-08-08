@@ -21,7 +21,7 @@ export default function Home() {
   }
   if (error) {
     console.log(error)
-    router.reload()
+    return <p>Error loading content. Try reloading page</p>
   }
   return (
     <div className=' w-full mt-4 flex flex-col p-2'>
@@ -60,9 +60,6 @@ export default function Home() {
         Create and share your favorite recipes with eatable.recipes.
       </p>
       </header>
-      {!session &&
-        <button className='btn-primary' onClick={() => signIn()}>Sign in</button>
-      }
 
       <h3 className='ml-2 text-2xl leading-8 font-bold'>Popular recipes</h3>
       <div className='flex flex-wrap gap-2 p-2 w-full'>
@@ -74,7 +71,7 @@ export default function Home() {
             <p>{recipe.description.length > 40 ? 
               recipe.description.substring(0, 40) + '...' : recipe.description
             }</p>
-            <Image className='object-cover w-full h-auto' src={recipe.image.secure_url} width={recipe.image.width} height={recipe.image.height} objectFit='cover' />
+            <Image className='object-cover w-full h-auto' src={recipe.image.secure_url} width={recipe.image.width} height={recipe.image.height} alt={recipe.title} objectFit='cover' />
           </div>
           </a>
         </Link>
