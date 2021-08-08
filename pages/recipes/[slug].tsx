@@ -9,7 +9,7 @@ import client from '../../apollo/index'
 import { getRecipeBySlug, saveRecipe } from '../../gql'
 
 
-const Recipe = ({ recipe, meta }) => {
+const Recipe = ({ pageProps: {recipe, meta }}) => {
   const router = useRouter()
   const [session] = useSession()
   const [saveRecipeMutation] = useMutation(saveRecipe)
@@ -29,6 +29,7 @@ const Recipe = ({ recipe, meta }) => {
       console.log(error)
     }
   }
+
   return (
     <>
       <NextSeo
@@ -118,8 +119,7 @@ export async function getStaticProps(ctx) {
         },
       }
     }
-    
-    const { recipe } = data.getRecipeBySlug
+    const recipe = data.getRecipeBySlug
     const meta = {
       url: process.env.NEXT_PUBLIC_URL + '/recipes/' + recipe.slug,
       title: recipe.title,
@@ -135,11 +135,14 @@ export async function getStaticProps(ctx) {
       type: 'article',
       site_name: 'eatable recipes'
     }
+
+    const props = {
+      recipe,
+      meta
+    }
+
     return {
-      props: {
-        recipe,
-        meta
-      },
+      props,
       revalidate: 5
     }
 
