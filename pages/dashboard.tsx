@@ -73,7 +73,10 @@ const dashboard = () => {
         ))}
       </div>
       <hr className='my-4' />
-      <button className="btn-danger" onClick={() => signOut()}>Signout</button>
+      <button className="btn-danger" onClick={() => {
+        signOut()
+        router.push('/');
+      }}>Signout</button>
     </div>
   )
 }
