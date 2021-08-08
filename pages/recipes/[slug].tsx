@@ -162,7 +162,7 @@ export async function getStaticPaths() {
   const paths = [
     {
       params: {
-        slug: 'spagheti'
+        slug: 'salmon'
       }
     }
   ]
