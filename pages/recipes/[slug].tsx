@@ -1,10 +1,10 @@
 import React from 'react'
 import Image from 'next/image'
+import { NextSeo } from 'next-seo';
 import {  useSession } from 'next-auth/client'
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router'
 
-import Head from 'next/head'
 import client from '../../apollo/index'
 import { getRecipeBySlug, saveRecipe } from '../../gql'
 
@@ -31,44 +31,31 @@ const Recipe = ({ recipe }) => {
   }
   return (
     <>
-      <Head>
-        <title>{recipe.title}</title>
-        <meta name="description" content={recipe.description} />
-        <meta property="og:type" name='og:type' content="article" />
-        <meta property="og:title" name='og:title' content={recipe.title} />
-        <meta property="og:description" name='og:description' content={recipe.description} />
-        <meta property="og:image" name='og:image' content={recipe.image.secure_url} />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug +'/'}  />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:locale:alternate" content="en_US" />     
-        <meta property="article:author" content={recipe.author.user.name} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@EatableRecipes" />
-        <meta name="twitter:title" content={recipe.title} />
-        <meta name="twitter:description" content={recipe.description} />
-        <meta name="twitter:image" content={recipe.image.secure_url} />
-        <meta name="twitter:url" content={process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug} />
-        <meta name="twitter:creator" content="@eatablerecipes" />
-        <meta name="twitter:image:width" content={recipe.image.width} />
-        <meta name="twitter:image:height" content={recipe.image.height} />
-
-
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "http://schema.org",
-            "@type": "Recipe",
-            name: recipe.title,
-            description: recipe.description,
-            image: {
-              "@type": "ImageObject",
+      <NextSeo
+        title={recipe.title}
+        description={recipe.description}
+        canonical={`${process.env.NEXT_PUBLIC_URL + '/recipes/' + recipe.slug}`}
+        openGraph={{
+          url: process.env.NEXT_PUBLIC_URL + '/recipes/' + recipe.slug,
+          title: recipe.title,
+          description: recipe.description,
+          images: [
+            {
               url: recipe.image.secure_url,
+              width: recipe.image.width,
               height: recipe.image.height,
-              width: recipe.image.width
-            },
-            url: process.env.NEXT_PUBLIC_URL + '/recipes/'+ recipe.slug
-          })}
-        </script>
-      </Head>
+              alt: recipe.title
+            }
+          ],
+          type: 'article',
+          site_name: 'eatable recipes'
+        }}
+        twitter={{
+          cardType: 'summary_large_image',
+          site: '@eatablerecipes',
+          handle: '@eatablerecipes'
+        }}
+      />
       <article className='flex flex-col w-full p-2 mx-auto mt-2  max-w-4xl'>
         <Image className='object-cover w-full h-auto rounded shadow' src={recipe.image.secure_url} layout='intrinsic' alt={recipe.title} width={recipe.image.width} height={recipe.image.height} objectFit='cover' />
         <div className='flex flex-col p-2 mt-3'>
@@ -126,7 +113,7 @@ const Recipe = ({ recipe }) => {
   )
 }
 
-export async function getStaticProps(ctx) {
+export async function getServerSideProps(ctx) {
 
   try {
     const { slug } = ctx.params
@@ -143,6 +130,7 @@ export async function getStaticProps(ctx) {
           destination: '/',
           permanent: false,
         },
+        notFound: true
       }
     }
     
@@ -150,7 +138,7 @@ export async function getStaticProps(ctx) {
       props: {
         recipe: data.getRecipeBySlug
       },
-      revalidate: 5
+      // revalidate: 5
     }
 
     
@@ -163,17 +151,6 @@ export async function getStaticProps(ctx) {
       },
     }
   }
-}
-
-export async function getStaticPaths() {
-  const paths = [
-    {
-      params: {
-        slug: 'spagheti'
-      }
-    }
-  ]
-  return { paths, fallback: 'blocking' }
 }
 
 export default Recipe
