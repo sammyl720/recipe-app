@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 
 import client from '../../apollo/index'
 import { getRecipeBySlug, saveRecipe } from '../../gql'
+import { GetStaticPropsContext } from 'next';
 
 
 const Recipe = ({ pageProps: {recipe, meta }}) => {
@@ -100,13 +101,14 @@ const Recipe = ({ pageProps: {recipe, meta }}) => {
   )
 }
 
-export async function getStaticProps(ctx) {
+export async function getStaticProps(ctx:GetStaticPropsContext) {
 
   try {
     const { slug } = ctx.params
     const { data } = await client.query({
         query: getRecipeBySlug,
         variables: {
+          // @ts-ignore
           slug: slug.toLowerCase()
         }
     })
@@ -135,7 +137,6 @@ export async function getStaticProps(ctx) {
       type: 'article',
       site_name: 'eatable recipes'
     }
-
     const props = {
       recipe,
       meta

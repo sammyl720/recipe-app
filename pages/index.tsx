@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { useQuery } from '@apollo/client'
 import { getPopularRecipes } from '../gql/index'
 import Image from 'next/image'
@@ -25,35 +24,6 @@ export default function Home() {
   }
   return (
     <div className=' w-full mt-4 flex flex-col p-2'>
-      <Head>
-        <title>Recipes</title>
-        <meta name='description' content='Find and craete your favorite recipes on eatable.recipes' />
-        <meta property='og:title' content='Recipes' />
-        <meta property='og:description' content='Find and create your favorite recipes on eatable.recipes' />
-        <meta property='og:image' content={process.env.NEXT_PUBLIC_URL + `/android-chrome-512x512.png`} />
-        <meta property='og:image:width' content='512' />
-        <meta property='og:image:height' content='512' />
-        <meta property='og:url' content={process.env.NEXT_PUBLIC_URL} />
-        <meta property='og:site_name' content='Recipes' />
-        <meta property='og:type' content='website' />
-        <meta property='og:locale' content='en_US' />
-        <meta property='og:locale:alternate' content='en_GB' />
-        <meta property='og:locale:alternate' content='en_CA' />
-        <meta property='og:locale:alternate' content='en_AU' />
-        
-        <meta name='twitter:card' content='summary_large_image' />
-        <meta name='twitter:site' content='@EatableRecipes' />
-        <meta name='twitter:creator' content='@EatableRecipes' />
-        <meta name='twitter:title' content='Recipes' />
-        <meta name='twitter:description' content='Find and create your favorite recipes on eatable.recipes' />
-        <meta name='twitter:image' content={process.env.NEXT_PUBLIC_URL + `/android-chrome-512x512.png`} />
-        <meta name='twitter:image:width' content='512' />
-        <meta name='twitter:image:height' content='512' />
-        <meta name='twitter:card' content='summary_large_image' />
-
-        <meta name='theme-color' content='#ffffff' />
-        <meta name='msapplication-TileColor' content='#ffffff' />
-      </Head>
       <header className='p-2 mb-4'>
       <h1 className='leading-8 font-extrabold text-2xl my-4'>Welcome to recipe app</h1>
       <p>
