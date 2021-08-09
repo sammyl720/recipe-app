@@ -10,17 +10,17 @@ import Link from 'next/link';
 
 const dashboard = () => {
   
-  const [session] = useSession();
+  const [session, load] = useSession();
   const router = useRouter();
-  if(!session) {
-    router.push('/');
-  }
   useEffect(() => {
+    if(!session) {
+      router.push('/');
+    }
   }, []);
 
   const { loading, error, data } = useQuery(me);
 
-  if (loading) {
+  if (loading || load) {
     return <Loader />;
   }
 
