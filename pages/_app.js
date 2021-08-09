@@ -11,16 +11,6 @@ function MyApp({ Component, ...pageProps }) {
     <Provider session={pageProps.session}>
       <ApolloProvider client={client}>
         <Layout>
-          {pageProps.meta && (
-            <>
-              <Head>
-                <title>{pageProps.meta.title}</title>
-                <meta name="description" content={pageProps.meta.description} />
-
-                <NextSeo openGraph={pageProps.meta} />
-              </Head>
-            </>
-          )}
           <Component {...({...pageProps})} />
         </Layout>
       </ApolloProvider>
