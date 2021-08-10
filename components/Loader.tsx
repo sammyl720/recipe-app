@@ -5,7 +5,7 @@ const Loader = () => {
   return (
     <div className='loader'>
       <div className={`${common} mr-1 animate-bounce`} />
-      <div className={`${common} mr-1 animate-bounce200`} />
+      <div className={`${common} mr-1  animate-bounce200`} />
       <div className={`${common} animate-bounce400`} />
     </div>
   )
